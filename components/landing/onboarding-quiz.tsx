@@ -52,8 +52,7 @@ const QUIZ_STEPS = [
       { value: "math", label: "Mathematics" },
       { value: "science", label: "Science" },
       { value: "english", label: "English/Literature" },
-      { value: "history", label: "History" },
-      { value: "art", label: "Art" },
+      { value: "history", label: "Art" },
       { value: "music", label: "Music" },
       { value: "pe", label: "Physical Education" },
       { value: "computer", label: "Computer Science" },
@@ -100,14 +99,26 @@ const QUIZ_STEPS = [
     ],
   },
   {
-    id: "career-knowledge",
+    id: "career-knowledge-1",
     title: "Your current knowledge",
-    question: "How would you describe your knowledge about the career fields you selected?",
+    question: "", // Will be dynamically set
     type: "radio",
     options: [
-      { value: "beginner", label: "Beginner - I know very little about these fields" },
+      { value: "beginner", label: "Beginner - I know very little about this field" },
       { value: "some", label: "Some knowledge - I have basic understanding" },
-      { value: "moderate", label: "Moderate - I have researched these fields" },
+      { value: "moderate", label: "Moderate - I have researched this field" },
+      { value: "advanced", label: "Advanced - I have significant knowledge" },
+    ],
+  },
+  {
+    id: "career-knowledge-2",
+    title: "Your current knowledge",
+    question: "", // Will be dynamically set
+    type: "radio",
+    options: [
+      { value: "beginner", label: "Beginner - I know very little about this field" },
+      { value: "some", label: "Some knowledge - I have basic understanding" },
+      { value: "moderate", label: "Moderate - I have researched this field" },
       { value: "advanced", label: "Advanced - I have significant knowledge" },
     ],
   },
@@ -126,7 +137,23 @@ export function OnboardingQuiz() {
   const [answers, setAnswers] = useState<Record<string, any>>({})
   const router = useRouter()
 
-  const currentQuestion = QUIZ_STEPS[currentStep]
+  const getCurrentQuestion = () => {
+    const question = { ...QUIZ_STEPS[currentStep] }
+
+    if (question.id === "career-knowledge-1") {
+      const selectedCareers = answers["career-interests"] || []
+      const firstCareer = selectedCareers[0]
+      question.question = `How would you describe your knowledge about ${firstCareer} career/field you picked above?`
+    } else if (question.id === "career-knowledge-2") {
+      const selectedCareers = answers["career-interests"] || []
+      const secondCareer = selectedCareers[1]
+      question.question = `How would you describe your knowledge about ${secondCareer} career/field you picked above?`
+    }
+
+    return question
+  }
+
+  const currentQuestion = getCurrentQuestion()
   const isLastStep = currentStep === QUIZ_STEPS.length - 1
 
   const handleAnswer = (questionId: string, value: any) => {
@@ -172,8 +199,17 @@ export function OnboardingQuiz() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
-      <Card className="w-full max-w-2xl">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 flex items-center justify-center p-4 relative overflow-hidden">
+      {/* Soft animated background elements */}
+      <div className="absolute inset-0">
+        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-blue-50/40 via-indigo-50/30 to-purple-50/40"></div>
+        <div className="absolute top-20 left-20 w-64 h-64 bg-blue-100/20 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute top-60 right-32 w-48 h-48 bg-indigo-100/20 rounded-full blur-2xl animate-pulse delay-1000"></div>
+        <div className="absolute bottom-32 left-32 w-80 h-80 bg-purple-100/20 rounded-full blur-3xl animate-pulse delay-2000"></div>
+        <div className="absolute bottom-20 right-20 w-32 h-32 bg-pink-100/20 rounded-full blur-xl animate-pulse delay-500"></div>
+      </div>
+
+      <Card className="w-full max-w-2xl relative z-10 bg-white/95 backdrop-blur-sm shadow-xl border-0 ring-1 ring-gray-200/50">
         <CardHeader>
           <div className="flex items-center justify-between mb-4">
             <div className="text-sm text-muted-foreground">
@@ -181,13 +217,15 @@ export function OnboardingQuiz() {
             </div>
             <div className="w-32 bg-gray-200 rounded-full h-2">
               <div
-                className="bg-blue-600 h-2 rounded-full transition-all duration-300"
+                className="bg-gradient-to-r from-blue-500 to-indigo-600 h-2 rounded-full transition-all duration-300"
                 style={{ width: `${((currentStep + 1) / QUIZ_STEPS.length) * 100}%` }}
               />
             </div>
           </div>
-          <CardTitle className="text-2xl">{currentQuestion.title}</CardTitle>
-          <CardDescription className="text-lg">{currentQuestion.question}</CardDescription>
+          <CardTitle className="text-2xl bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
+            {currentQuestion.title}
+          </CardTitle>
+          <CardDescription className="text-lg text-gray-600">{currentQuestion.question}</CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
           {currentQuestion.type === "radio" && (
@@ -258,7 +296,11 @@ export function OnboardingQuiz() {
               Previous
             </Button>
 
-            <Button onClick={handleNext} disabled={!canProceed()}>
+            <Button
+              onClick={handleNext}
+              disabled={!canProceed()}
+              className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700"
+            >
               {isLastStep ? "Complete Quiz" : "Next"}
               {!isLastStep && <ArrowRight className="ml-2 h-4 w-4" />}
             </Button>

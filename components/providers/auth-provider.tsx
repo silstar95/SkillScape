@@ -4,15 +4,23 @@ import type React from "react"
 
 import { createContext, useContext, useEffect, useState } from "react"
 import type { User } from "firebase/auth"
-import { auth } from "@/lib/firebase"
+import { auth, db } from "@/lib/firebase"
 import { onAuthStateChanged } from "firebase/auth"
+import { doc, getDoc } from "firebase/firestore"
 
 interface AuthUser extends User {
-  name?: string
+  firstName?: string
+  lastName?: string
   userType?: "student" | "counselor"
   school?: string
   grade?: string
   role?: string
+  xp?: number
+  level?: number
+  badges?: string[]
+  completedSimulations?: string[]
+  currentStreak?: number
+  totalHours?: number
 }
 
 interface AuthContextType {
@@ -32,15 +40,31 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
       if (firebaseUser) {
-        // In a real app, you'd fetch additional user data from Firestore here
-        const userData: AuthUser = {
-          ...firebaseUser,
-          name: firebaseUser.displayName || "User",
-          userType: "student", // This would come from your database
-          school: "Sample High School",
-          grade: "11",
+        try {
+          // Fetch additional user data from Firestore
+          const userDoc = await getDoc(doc(db, "users", firebaseUser.uid))
+          const userData = userDoc.data()
+
+          const enrichedUser: AuthUser = {
+            ...firebaseUser,
+            firstName: userData?.firstName || firebaseUser.displayName?.split(" ")[0] || "User",
+            lastName: userData?.lastName || firebaseUser.displayName?.split(" ").slice(1).join(" ") || "",
+            userType: userData?.userType || "student",
+            school: userData?.school || "Not specified",
+            grade: userData?.grade,
+            role: userData?.role,
+            xp: userData?.xp || 0,
+            level: userData?.level || 1,
+            badges: userData?.badges || [],
+            completedSimulations: userData?.completedSimulations || [],
+            currentStreak: userData?.currentStreak || 0,
+            totalHours: userData?.totalHours || 0,
+          }
+          setUser(enrichedUser)
+        } catch (error) {
+          console.error("Error fetching user data:", error)
+          setUser(firebaseUser as AuthUser)
         }
-        setUser(userData)
       } else {
         setUser(null)
       }

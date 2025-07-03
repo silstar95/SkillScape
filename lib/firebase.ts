@@ -3,14 +3,13 @@ import { getAuth } from "firebase/auth"
 import { getFirestore } from "firebase/firestore"
 
 const firebaseConfig = {
-  // Your Firebase config will go here
-  // For now, using placeholder values
-  apiKey: "placeholder-api-key",
-  authDomain: "skillscape-mvp.firebaseapp.com",
-  projectId: "skillscape-mvp",
-  storageBucket: "skillscape-mvp.appspot.com",
-  messagingSenderId: "123456789",
-  appId: "placeholder-app-id",
+  // Replace with your actual Firebase config
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 }
 
 const app = initializeApp(firebaseConfig)
