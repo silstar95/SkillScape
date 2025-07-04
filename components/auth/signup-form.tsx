@@ -117,7 +117,7 @@ export function SignupForm() {
           </CardTitle>
           <CardDescription className="text-base text-gray-600">
             {userType === "student"
-              ? "🚀 Thanks for sharing that information! Now, we just need a few more things from you before you can get started on your quest."
+              ? "Thanks for sharing that information! Now, we just need a few more things from you before you can get started on your quest."
               : "🎓 Join Future Quest as an educator and help guide students on their career exploration journey."}
           </CardDescription>
         </CardHeader>

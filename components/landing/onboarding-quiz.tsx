@@ -143,11 +143,11 @@ export function OnboardingQuiz() {
     if (question.id === "career-knowledge-1") {
       const selectedCareers = answers["career-interests"] || []
       const firstCareer = selectedCareers[0]
-      question.question = `How would you describe your knowledge about ${firstCareer} career/field you picked above?`
+      question.question = `How would you describe your knowledge about ${firstCareer} career you picked above?`
     } else if (question.id === "career-knowledge-2") {
       const selectedCareers = answers["career-interests"] || []
       const secondCareer = selectedCareers[1]
-      question.question = `How would you describe your knowledge about ${secondCareer} career/field you picked above?`
+      question.question = `How would you describe your knowledge about ${secondCareer} career you picked above?`
     }
 
     return question

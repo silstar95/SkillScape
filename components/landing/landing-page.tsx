@@ -68,7 +68,7 @@ export function LandingPage() {
 
           {/* Subtitle */}
           <p className="text-xl md:text-2xl mb-8 max-w-4xl mx-auto leading-relaxed text-gray-200">
-            🚀 Explore different career paths through{" "}
+             Explore different career paths through{" "}
             <span className="text-yellow-400 font-semibold">immersive simulations</span> and hands-on experiences.
             <br />
             Discover your interests, build skills, and{" "}
@@ -93,7 +93,7 @@ export function LandingPage() {
 
           {/* CTA Section */}
           <div className="space-y-6">
-            <p className="text-2xl font-semibold text-yellow-400 animate-bounce">🎯 Ready to discover your future?</p>
+            <p className="text-2xl font-semibold text-yellow-400 animate-bounce">🚀 Ready to discover your future?</p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
               <Button

@@ -97,7 +97,7 @@ export function LoginForm() {
             <Sparkles className="h-8 w-8 text-white" />
           </div>
           <CardTitle className="text-2xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
-            Welcome Back
+            Welcome
           </CardTitle>
           <CardDescription className="text-base text-gray-600">
             Sign in to continue your Future Quest journey
